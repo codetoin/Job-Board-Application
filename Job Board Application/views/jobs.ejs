@@ -1,0 +1,128 @@
+<%- include("partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100">
+
+<%- include("partials/header.ejs") %>
+
+<div class="min-h-screen flex">
+
+  <!-- Sidebar -->
+  <% if (user && ["jobseeker", "employer", "admin"].includes(user.role)) { %>
+    <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+      <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+      <nav class="flex flex-col gap-4 text-gray-200">
+        <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+
+        <% if(user.role === "admin") { %>
+          <%- include("partials/sidebars/admin.ejs") %>
+        <% } else if(user.role === "employer") { %>
+          <%- include("partials/sidebars/employer.ejs") %>
+        <% } else if(user.role === "jobseeker") { %>
+          <%- include("partials/sidebars/jobseeker.ejs") %>
+        <% } %>
+      </nav>
+    </aside>
+  <% } %>
+
+  <!-- Main Content + Footer wrapper -->
+  <!-- If user is logged in, add margin-left for sidebar, else full width -->
+  <div class="flex-1 flex flex-col <%= user && ["jobseeker","employer","admin"].includes(user.role) ? 'md:ml-64' : '' %>">
+
+    <!-- Main Content -->
+    <div class="flex-grow p-6 md:p-10 space-y-10 max-w-7xl mx-auto w-full">
+
+      <!-- Page Header -->
+      <section class="text-center">
+        <h1 class="text-4xl font-extrabold text-indigo-400 mb-3">Job Listings</h1>
+        <p class="text-gray-300">Find your next opportunity</p>
+      </section>
+
+      <!-- Filters -->
+      <section class="bg-gray-800 rounded-xl p-6 shadow-lg">
+        <form action="/jobs" method="GET" class="flex flex-col md:flex-row gap-4 items-center">
+          <input
+            type="text"
+            name="q"
+            placeholder="Search jobs..."
+            value="<%= filters?.q || '' %>"
+            class="flex-1 px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <select
+            name="location"
+            class="px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700"
+          >
+            <option value="">All Type</option>
+            <option value="remote" <%= filters?.location === 'remote' ? 'selected' : '' %>>
+              Remote
+            </option>
+          </select>
+
+          <button
+            type="submit"
+            class="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition"
+          >
+            Filter
+          </button>
+        </form>
+      </section>
+
+      <!-- Jobs List -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <% jobs.forEach(job => { %>
+          <div class="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition space-y-3">
+
+            <h3 class="text-xl font-bold text-indigo-400"><%= job.title %></h3>
+            <p class="text-gray-300"><%= job.company %> • <%= job.location %></p>
+            <p class="text-sm text-gray-400"><%= job.job_type %> | <%= job.experience_level %> level</p>
+
+            <div class="flex flex-wrap gap-3 pt-4">
+              <a
+                href="/jobs/<%= job.id %>"
+                class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition text-sm"
+              >
+                View Details
+              </a>
+
+              <% if (user && user.role === 'jobseeker') { %>
+                <a
+                  href="/jobs/<%= job.id %>/apply"
+                  class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition text-sm text-white"
+                >
+                  Apply
+                </a>
+
+                <a
+                  href="/jobs/<%= job.id %>/save"
+                  class="px-4 py-2 rounded-lg border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-gray-900 transition text-sm"
+                >
+                  Save Job
+                </a>
+              <% } else if (!user) { %>
+                <a
+                  href="/login"
+                  class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition text-sm text-white"
+                >
+                  Login to Apply
+                </a>
+              <% } %>
+
+            </div>
+          </div>
+        <% }) %>
+      </section>
+
+      <!-- Pagination -->
+      <section class="flex justify-center gap-4 pt-6">
+        <a href="#" class="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700">Previous</a>
+        <a href="#" class="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700">Next</a>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <%- include("partials/footer.ejs") %>
+
+  </div>
+</div>
+
+</body>

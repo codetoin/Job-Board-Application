@@ -1,0 +1,73 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 overflow-x-hidden">
+
+  <!-- Header -->
+  <%- include("../partials/header.ejs") %>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar (always visible for logged-in employer) -->
+    <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+      <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+      <nav class="flex flex-col gap-4 text-gray-200">
+        <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+        <%- include("../partials/sidebars/employer.ejs") %>
+      </nav>
+    </aside>
+
+    <!-- Main Content + Footer wrapper -->
+    <div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+
+      <!-- Main Content -->
+      <main class="flex-grow p-6 md:p-10 space-y-10 flex flex-col">
+
+        <!-- Page Header -->
+        <div class="border-b border-gray-700 pb-4">
+          <h1 class="text-2xl font-bold text-indigo-400">
+            Employer Dashboard
+          </h1>
+          <p class="text-sm text-gray-400 mt-1">
+            Welcome, <strong class="text-gray-200"><%= user.name %></strong>
+          </p>
+        </div>
+
+        <!-- Stats Section -->
+        <section class="space-y-4">
+          <h2 class="text-lg font-semibold text-gray-200">Overview</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Total Jobs -->
+            <div class="border border-gray-700 rounded-lg p-6 bg-gray-800">
+              <p class="text-sm text-gray-400">Total Jobs</p>
+              <p class="text-3xl font-bold text-indigo-400 mt-2"><%= stats.totalJobs %></p>
+            </div>
+
+            <!-- Total Applications -->
+            <div class="border border-gray-700 rounded-lg p-6 bg-gray-800">
+              <p class="text-sm text-gray-400">Total Applications</p>
+              <p class="text-3xl font-bold text-indigo-400 mt-2"><%= stats.totalApplications %></p>
+            </div>
+
+            <!-- Hired Candidates -->
+            <div class="border border-gray-700 rounded-lg p-6 bg-gray-800">
+              <p class="text-sm text-gray-400">Hired Candidates</p>
+              <p class="text-3xl font-bold text-green-400 mt-2"><%= stats.hired %></p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Spacer to push footer down -->
+        <div class="flex-1 min-h-[6rem]"></div>
+
+      </main>
+
+      <!-- Footer: same as about/jobs pages -->
+      <%- include("../partials/footer.ejs") %>
+
+    </div>
+  </div>
+
+</body>
+</html>

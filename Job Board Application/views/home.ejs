@@ -1,0 +1,67 @@
+<%- include("partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100">
+
+  <!-- Header -->
+  <%- include("partials/header.ejs") %>
+
+  <div class="min-h-screen flex">
+
+    <!-- Sidebar for logged-in users -->
+    <% if (user && ["jobseeker", "employer", "admin"].includes(user.role)) { %>
+      <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+        <nav class="flex flex-col gap-4 text-gray-200">
+          <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+
+          <% if(user.role === "admin") { %>
+            <%- include("partials/sidebars/admin.ejs") %>
+          <% } else if(user.role === "employer") { %>
+            <%- include("partials/sidebars/employer.ejs") %>
+          <% } else if(user.role === "jobseeker") { %>
+            <%- include("partials/sidebars/jobseeker.ejs") %>
+          <% } %>
+        </nav>
+      </aside>
+    <% } %>
+
+    <!-- Main Content + Footer wrapper -->
+    <div class="flex-1 flex flex-col <%= user && ["jobseeker","employer","admin"].includes(user.role) ? 'md:ml-64' : '' %> min-h-screen">
+
+      <!-- Main Content -->
+      <main class="flex-grow p-6 md:p-10 space-y-10 max-w-7xl mx-auto w-full">
+
+        <!-- Hero Section -->
+        <section class="bg-indigo-700 text-white rounded-xl p-10 shadow-lg text-center">
+          <h1 class="text-4xl font-bold mb-4">Welcome to Job Board Application</h1>
+          <p class="text-lg mb-6">Explore jobs, connect with top companies, and manage applications with ease.</p>
+          <a href="/jobs" class="bg-indigo-400 text-gray-900 font-semibold px-6 py-3 rounded-lg shadow hover:bg-indigo-300 transition">Browse Jobs</a>
+        </section>
+
+        <!-- How to Get Started -->
+        <section class="bg-gray-800 rounded-xl shadow p-8">
+          <h2 class="text-2xl font-bold mb-4 text-indigo-400">How You Can Get Started</h2>
+          <p class="text-gray-200 mb-4">
+            Whether you are looking for your first job or aiming to level up your career, our platform makes it simple.
+          </p>
+          <ul class="list-disc list-inside text-gray-200 space-y-2">
+            <li>Browse thousands of job listings across multiple industries.</li>
+            <li>Create a profile to showcase your skills and experience.</li>
+            <li>Save your favorite jobs and apply with ease.</li>
+            <li>Track your applications and stay informed at every step.</li>
+            <li>Access career resources and guidance to improve your chances of success.</li>
+          </ul>
+          <p class="text-gray-200 mt-4">
+            Start exploring today and take the next step towards your dream career.
+          </p>
+        </section>
+
+      </main>
+
+      <!-- Footer -->
+      <%- include("partials/footer.ejs") %>
+
+    </div>
+  </div>
+
+</body>
+</html>

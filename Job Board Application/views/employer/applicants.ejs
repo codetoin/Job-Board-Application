@@ -1,0 +1,119 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 overflow-x-hidden flex flex-col min-h-screen">
+
+<%- include("../partials/header.ejs") %>
+
+<div class="flex flex-1 min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 border-r border-gray-700 p-6 hidden md:flex flex-col">
+    <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+    <nav class="flex flex-col gap-4 text-gray-200">
+      <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+      <%- include("../partials/sidebars/employer.ejs") %>
+    </nav>
+  </aside>
+
+  <!-- Main Content + Footer wrapper -->
+  <div class="flex-1 flex flex-col md:ml-64 min-h-screen">
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col p-6 md:p-10 space-y-10">
+
+      <!-- Page Header -->
+      <div class="border-b border-gray-700 pb-4">
+        <h1 class="text-2xl font-bold text-indigo-400">Applicants</h1>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-5 text-center">
+          <p class="text-sm text-gray-400">Total Applicants</p>
+          <p class="text-3xl font-bold text-indigo-400 mt-2"><%= stats.total %></p>
+        </div>
+
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-5 text-center">
+          <p class="text-sm text-gray-400">Pending</p>
+          <p class="text-3xl font-bold text-yellow-400 mt-2"><%= stats.pending %></p>
+        </div>
+
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-5 text-center">
+          <p class="text-sm text-gray-400">Reviewed</p>
+          <p class="text-3xl font-bold text-blue-400 mt-2"><%= stats.reviewed %></p>
+        </div>
+
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-5 text-center">
+          <p class="text-sm text-gray-400">Accepted</p>
+          <p class="text-3xl font-bold text-green-400 mt-2"><%= stats.accepted %></p>
+        </div>
+
+      </div>
+
+      <!-- Applicants Table -->
+      <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-x-auto">
+
+        <table class="w-full text-sm">
+          <thead class="bg-gray-700 text-gray-300">
+            <tr>
+              <th class="px-4 py-3 text-left">Name</th>
+              <th class="px-4 py-3 text-left">Email</th>
+              <th class="px-4 py-3 text-left">Job</th>
+              <th class="px-4 py-3 text-left">Status</th>
+              <th class="px-4 py-3 text-left">Resume</th>
+              <th class="px-4 py-3 text-left">Date Applied</th>
+              <th class="px-4 py-3 text-left">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% applicants.forEach(applicant => { %>
+            <tr class="border-t border-gray-700 hover:bg-gray-700 transition">
+              <td class="px-4 py-3 font-medium"><%= applicant.name %></td>
+              <td class="px-4 py-3 text-gray-400"><%= applicant.email %></td>
+              <td class="px-4 py-3"><%= applicant.job_title %></td>
+              <td class="px-4 py-3 font-semibold"><%= applicant.status %></td>
+
+              <td class="px-4 py-3">
+                <% if (applicant.resume_url) { %>
+                  <a href="<%= applicant.resume_url %>" target="_blank" class="text-indigo-400 hover:underline">
+                    View Resume
+                  </a>
+                <% } else { %>
+                  <span class="text-gray-500">N/A</span>
+                <% } %>
+              </td>
+
+              <td class="px-4 py-3"><%= new Date(applicant.applied_at).toLocaleDateString() %></td>
+
+              <td class="px-4 py-3">
+                <form method="POST" action="/employer/applicants/<%= applicant.applicant_id %>/status">
+                  <select
+                    name="status"
+                    onchange="this.form.submit()"
+                    class="bg-gray-900 border border-gray-600 text-gray-100 rounded px-2 py-1 text-sm"
+                  >
+                    <option value="pending" <%= applicant.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="reviewed" <%= applicant.status === 'reviewed' ? 'selected' : '' %>>Reviewed</option>
+                    <option value="accepted" <%= applicant.status === 'accepted' ? 'selected' : '' %>>Accepted</option>
+                    <option value="rejected" <%= applicant.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                  </select>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <%- include("../partials/footer.ejs") %>
+
+  </div>
+</div>
+
+</body>
+</html>

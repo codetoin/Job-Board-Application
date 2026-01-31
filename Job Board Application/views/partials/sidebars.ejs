@@ -1,0 +1,9 @@
+<% if (user?.role === "jobseeker") { %>
+  <%- include("sidebars/jobseeker") %>
+
+<% } else if (user?.role === "employer") { %>
+  <%- include("sidebars/employer") %>
+
+<% } else if (user?.role === "admin") { %>
+  <%- include("sidebars/admin") %>
+<% } %>

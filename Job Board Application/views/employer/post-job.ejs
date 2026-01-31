@@ -1,0 +1,136 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+<%- include("../partials/header.ejs") %>
+
+<div class="flex flex-1 min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+    <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+    <nav class="flex flex-col gap-4 text-gray-200">
+      <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+      <%- include("../partials/sidebars/employer.ejs") %>
+    </nav>
+  </aside>
+
+  <!-- Main Content + Footer wrapper -->
+  <div class="flex-1 flex flex-col md:ml-64 min-h-screen">
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col p-6 md:p-10 space-y-10">
+
+      <h2 class="text-2xl font-bold text-indigo-400 mb-6">Post a New Job</h2>
+
+      <form action="/employer/jobs/create" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md space-y-4">
+
+        <!-- Job Title -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Job Title</label>
+          <input type="text" name="title" placeholder="e.g. Frontend Developer" required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+        </div>
+
+        <!-- Job Type -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Job Type</label>
+          <select name="type" required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="">Select job type</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </div>
+
+        <!-- Experience Level -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Experience Level</label>
+          <select name="experience_level" required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="">Select Experience Level</option>
+            <option value="Junior">Junior</option>
+            <option value="Mid">Mid</option>
+            <option value="Senior">Senior</option>
+          </select>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Category</label>
+          <select name="category_id" required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="">Select category</option>
+            <% categories.forEach(category => { %>
+              <option value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Location</label>
+          <input type="text" name="location" placeholder="e.g. Kabul / Remote" required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+        </div>
+
+        <!-- Salary -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Salary</label>
+          <input type="number" name="salary"
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+        </div>
+
+        <!-- Job Description -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Job Description</label>
+          <textarea name="description" rows="5" placeholder="Describe the role, responsibilities, and expectations..." required
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+        </div>
+
+        <!-- Requirements -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Requirements</label>
+          <textarea name="requirements" rows="4" placeholder="Skills, experience, qualifications..."
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+        </div>
+
+        <!-- Remote -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Remote</label>
+          <select name="remote"
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+        </div>
+
+        <!-- Job Status -->
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Job Status</label>
+          <select name="is_active"
+            class="w-full p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="active">Active</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="flex gap-2 mt-4">
+          <button type="submit" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white font-semibold transition">Publish Job</button>
+          <a href="/employer/my-jobs" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-white font-semibold transition">Cancel</a>
+        </div>
+
+      </form>
+
+    </main>
+
+    <!-- Footer (sticky like other pages) -->
+    <%- include("../partials/footer.ejs") %>
+
+  </div>
+</div>
+
+</body>
+</html>

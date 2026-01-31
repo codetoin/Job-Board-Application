@@ -1,0 +1,57 @@
+<%- include("partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <%- include("partials/header.ejs") %>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="hidden md:flex flex-col fixed top-0 left-0 bottom-0 w-64 bg-gray-800 shadow-md p-6 overflow-y-auto">
+      <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+      <nav class="flex flex-col gap-4 text-gray-200">
+        <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+        <%- include("partials/sidebars/jobseeker.ejs") %>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 md:ml-64 flex flex-col">
+
+      <div class="p-6 md:p-10 flex-1 space-y-10">
+
+        <!-- Job Title -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-400 mb-4">
+          <%= job.title %>
+        </h1>
+
+        <!-- Company, Location, Experience -->
+        <div class="flex flex-wrap gap-6 text-gray-200 mb-6">
+          <p><strong>Company:</strong> <span class="text-gray-100"><%= job.company %></span></p>
+          <p><strong>Location:</strong> <span class="text-gray-100"><%= job.location %></span></p>
+          <p><strong>Experience:</strong> <span class="text-gray-100"><%= job.experience %> years</span></p>
+        </div>
+
+        <!-- Description -->
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h2 class="text-xl font-semibold text-indigo-400 mb-2">Job Description</h2>
+          <p class="text-gray-200 leading-relaxed">
+            <%= job.description %>
+          </p>
+        </div>
+
+        <!-- Back Button -->
+        <a href="/jobs" class="inline-block mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition">
+          ← Back to jobs
+        </a>
+
+      </div>
+
+      <!-- Footer -->
+      <%- include("partials/footer.ejs") %>
+
+    </main>
+
+  </div>
+</body>
+</html>

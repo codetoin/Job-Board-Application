@@ -1,0 +1,95 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+<%- include("../partials/header.ejs") %>
+
+<div class="flex flex-1 min-h-screen">
+
+  <!-- Sidebar (always visible for employer) -->
+  <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 border-r border-gray-700 p-6 hidden md:flex flex-col">
+    <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+    <nav class="flex flex-col gap-4 text-gray-200">
+      <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+      <%- include("../partials/sidebars/employer.ejs") %>
+    </nav>
+  </aside>
+
+  <!-- Main Content + Footer wrapper -->
+  <div class="flex-1 flex flex-col md:ml-64 min-h-screen">
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col p-6 md:p-10 space-y-10">
+
+      <!-- Page Header -->
+      <div class="flex justify-between items-center border-b border-gray-700 pb-4">
+        <h1 class="text-2xl font-bold text-indigo-400">My Jobs</h1>
+        <a href="/employer/post-job" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Post New Job</a>
+      </div>
+
+      <!-- If no jobs -->
+      <% if (!jobs || jobs.length === 0) { %>
+        <div class="bg-gray-800 p-6 rounded-lg text-center border border-gray-700">
+          <p class="mb-3 text-gray-300">You haven’t posted any jobs yet.</p>
+          <a href="/employer/jobs/new" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+            Post Your First Job
+          </a>
+        </div>
+      <% } else { %>
+
+        <!-- Jobs Table -->
+        <div class="overflow-x-auto bg-gray-800 border border-gray-700 rounded-lg">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-gray-700 text-gray-300">
+              <tr>
+                <th class="px-4 py-3">#</th>
+                <th class="px-4 py-3">Job Title</th>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Location</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Applications</th>
+                <th class="px-4 py-3">Posted On</th>
+                <th class="px-4 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% jobs.forEach((job, index) => { %>
+                <tr class="border-t border-gray-700 hover:bg-gray-700 transition">
+                  <td class="px-4 py-3 font-medium"><%= index + 1 %></td>
+                  <td class="px-4 py-3"><%= job.title %></td>
+                  <td class="px-4 py-3"><%= job.type %></td>
+                  <td class="px-4 py-3"><%= job.location %></td>
+                  <td class="px-4 py-3">
+                    <% if (job.is_active) { %>
+                      <span class="bg-green-600 text-gray-100 px-2 py-1 rounded text-xs font-semibold">Active</span>
+                    <% } else { %>
+                      <span class="bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs font-semibold">Closed</span>
+                    <% } %>
+                  </td>
+                  <td class="px-4 py-3"><%= job.applications_count || 0 %></td>
+                  <td class="px-4 py-3"><%= new Date(job.created_at).toLocaleDateString() %></td>
+                  <td class="px-4 py-3 flex gap-1">
+                    <a href="/employer/jobs/edit/<%= job.id %>" class="bg-yellow-500 text-gray-900 px-2 py-1 rounded hover:bg-yellow-600 transition text-sm">Edit</a>
+                    <% if (job.is_active) { %>
+                      <form action="/employer/jobs/close/<%= job.id %>" method="POST">
+                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition text-sm">Close</button>
+                      </form>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+      <% } %>
+
+    </main>
+
+    <!-- Footer: same as Home/About/Jobs pages -->
+    <%- include("../partials/footer.ejs") %>
+
+  </div>
+</div>
+
+</body>
+</html>

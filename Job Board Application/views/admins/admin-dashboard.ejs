@@ -1,0 +1,76 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <%- include("../partials/header.ejs") %>
+
+  <!-- Content Wrapper -->
+  <div class="flex flex-1 min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+      <h2 class="text-2xl font-bold mb-8 text-indigo-400">Admin Panel</h2>
+      <nav class="flex flex-col gap-4 text-gray-200">
+        <a href="/" class="px-3 py-2 rounded hover:bg-indigo-600 transition">Home</a>
+        <%- include("../partials/sidebars/admin.ejs") %>
+      </nav>
+    </aside>
+
+    <!-- Main Content + Footer wrapper -->
+    <div class="flex-1 flex flex-col md:ml-64">
+
+      <!-- Main -->
+      <main class="flex-grow p-6 md:p-10">
+
+        <h2 class="text-3xl font-bold text-indigo-400 mb-8">Admin Dashboard</h2>
+
+        <!-- Top Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+          <div class="bg-gray-800 p-6 rounded-lg shadow">
+            <h6 class="text-gray-400">Total Users</h6>
+            <h3 class="text-3xl font-bold mt-2"><%= totalUsers %></h3>
+          </div>
+
+          <div class="bg-gray-800 p-6 rounded-lg shadow">
+            <h6 class="text-gray-400">Total Companies</h6>
+            <h3 class="text-3xl font-bold mt-2"><%= totalCompanies %></h3>
+          </div>
+
+          <div class="bg-gray-800 p-6 rounded-lg shadow">
+            <h6 class="text-gray-400">Total Jobs</h6>
+            <h3 class="text-3xl font-bold mt-2"><%= totalJobs %></h3>
+          </div>
+
+          <div class="bg-gray-800 p-6 rounded-lg shadow">
+            <h6 class="text-gray-400">Total Applications</h6>
+            <h3 class="text-3xl font-bold mt-2"><%= totalApplications %></h3>
+          </div>
+
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow">
+          <h5 class="text-xl font-semibold mb-4 text-indigo-300">
+            Recent Activity
+          </h5>
+
+          <ul class="divide-y divide-gray-700">
+            <% recentActivities.forEach(activity => { %>
+              <li class="py-3 text-gray-300">
+                <%= activity %>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+
+      </main>
+
+      <!-- Footer -->
+      <%- include("../partials/footer.ejs") %>
+
+    </div>
+  </div>
+
+</body>
+</html>

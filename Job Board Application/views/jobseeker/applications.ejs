@@ -1,0 +1,68 @@
+<%- include("../partials/head.ejs") %>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <%- include("../partials/header.ejs") %>
+
+  <!-- Content Wrapper -->
+  <div class="flex flex-1 min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-md p-6 hidden md:flex flex-col">
+      <h2 class="text-2xl font-bold mb-8 text-indigo-400">Hello, <%= user.name %>!</h2>
+      <nav class="flex flex-col gap-4 text-gray-200">
+        <a href="/" class="block px-3 py-2 rounded hover:bg-indigo-600 hover:text-white font-medium transition">Home</a>
+        <%- include("../partials/sidebars/jobseeker.ejs") %>
+      </nav>
+    </aside>
+
+    <!-- Main Content + Footer wrapper -->
+    <div class="flex-1 flex flex-col md:ml-64">
+
+      <!-- Main -->
+      <main class="flex-grow p-6 md:p-10 space-y-10 overflow-x-hidden">
+
+        <!-- Page Title -->
+        <h1 class="text-3xl font-extrabold text-indigo-400 mb-4 text-center">Apply for Job</h1>
+
+        <!-- Job Details Card -->
+        <div class="bg-gray-800 rounded-2xl p-6 shadow-lg space-y-3">
+          <h2 class="text-2xl font-bold text-indigo-400"><%= job.title %></h2>
+          <p><span class="font-semibold">Description:</span> <%= job.description %></p>
+          <p><span class="font-semibold">Location:</span> <%= job.location %></p>
+          <p><span class="font-semibold">Job Type:</span> <%= job.job_type %></p>
+          <p><span class="font-semibold">Salary:</span> <%= job.salary %></p>
+          <p><span class="font-semibold">Company:</span> <%= job.company_name %></p>
+          <p><span class="font-semibold">Category:</span> <%= job.category_name %></p>
+          <p><span class="font-semibold">Experience Level:</span> <%= job.experience_level %></p>
+          <p><span class="font-semibold">Remote:</span> <%= job.remote ? "Yes" : "No" %></p>
+          <p><span class="font-semibold">Active:</span> <%= job.is_active ? "Yes" : "No" %></p>
+        </div>
+
+        <!-- Resume Section -->
+        <div class="bg-gray-800 rounded-2xl p-4 shadow-inner">
+          <p class="font-semibold mb-2">Using resume uploaded in your profile:</p>
+          <a href="<%= resume_url %>" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline">View Resume</a>
+        </div>
+
+        <!-- Apply Form -->
+        <form method="POST" action="/applications/apply/<%= job.id %>" class="flex flex-col items-start space-y-4">
+          <button
+            type="submit"
+            class="px-6 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold text-white transition"
+          >
+            Confirm Apply
+          </button>
+          <a href="/jobs" class="text-indigo-400 hover:text-indigo-300 underline mt-2">Cancel & Go Back</a>
+        </form>
+
+      </main>
+
+      <!-- Footer -->
+      <%- include("../partials/footer.ejs") %>
+
+    </div>
+  </div>
+
+</body>
+</html>
